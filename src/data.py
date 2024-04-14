@@ -78,9 +78,9 @@ class DATA:
             todo, selected = self.split(best, rest, lite, dark)
             # y values of centroid of (from DARK, select BUDGET0+i rows at random)
             selected_rows_rand = random.sample(dark, budget0+i)
-            y_values_sum = [0.0, 0.0, 0.0]
+            y_values_sum = [0.0]# According to number of y cols
             for row in selected_rows_rand:
-                y_val = list(map(coerce, row.cells[-3:]))
+                y_val = list(map(coerce, row.cells[-1:]))# Manually giving y cols?????
                 y_values_sum = [sum(x) for x in zip(y_values_sum, y_val)]
             num_rows = len(selected_rows_rand)
             y_values_centroid = [round(val / num_rows,2) for val in y_values_sum]
@@ -174,7 +174,7 @@ class DATA:
     
     def far(the, data_new):
         print()
-        print("Task 2: Get Far Working\n")
+        ("Task 2: Get Far Working\n")
         target_distance = 0.95
         current_distance = 0
         attempts = 0

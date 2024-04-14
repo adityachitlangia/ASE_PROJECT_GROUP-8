@@ -1,4 +1,4 @@
-n_estimators,criterion,max_depth,min_samples_split,min_samples_leaf,max_features,min_impurity_decrease,error
+N_estimators,criterion,max_depth,Min_samples_split,Min_samples_leaf,max_features,Min_impurity_decrease,Error-
 10,squared_error,5.0,2,1,NoneValue,0.0,0.1159999999999999
 10,squared_error,5.0,2,1,NoneValue,0.1,0.118
 10,squared_error,5.0,2,1,NoneValue,0.2,0.118
