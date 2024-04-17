@@ -44,7 +44,7 @@ class SAMPLE:
     has=self.ok().has
     return has[len(has)//2]
 
-  def bar(self, num, fmt="%8.3f", word="%10s", width=50):
+  def bar(self, num, fmt="%8.5f", word="%10s", width=50):
     out  = [' '] * width
     pos = lambda x: int(width * (x - self.lo) / (self.hi - self.lo + 1E-30))
     has = num.ok().has
@@ -122,7 +122,7 @@ def eg0(nums):
   for num in sk(nums):
     if num.rank != last: print("#")
     last=num.rank
-    print(all.bar(num,width=40,word="%20s", fmt="%5.2f"))
+    print(all.bar(num,width=40,word="%20s", fmt="%8.5f"))
     
 def eg1():
   x=1

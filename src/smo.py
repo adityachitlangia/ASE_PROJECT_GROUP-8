@@ -5,25 +5,40 @@ from test import Test
 from datetime import datetime
 import statistics
 from stats import SAMPLE, eg0
+import time
+from functools import wraps
 
-def hw7_part2(the):
-    print("\n")
-    print("\n")
+def calculate_execution_time(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"Execution time of '{func.__name__}{args[1]}': {execution_time:.6f} seconds")
+        return result
+    return wrapper
+
+def calculate_stats():
     d = DATA(src = the['file'])
     print("date:{}\nfile:{}\nrepeat:{}\nseed:{}\nrows:{}\ncols:{}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),the['file'],"20",the['seed'],len(d.rows), len(d.rows[0].cells)))
     sortedRows =  sorted(d.rows, key=lambda x: x.d2h(d))
-    print(f"best: {o(sortedRows[0].d2h(d),n=2)}")
+    print(f"best: {o(sortedRows[0].d2h(d),n=4)}")
     all = base(d)
-    print(f"tiny: {o(statistics.stdev(all)*0.35,n=2)}")
+    print(f"tiny: {o(statistics.stdev(all)*0.35,n=4)}")
     print("#base #bonr9 #rand9 #bonr15 #rand15 #bonr20 #rand20 #rand358 ")
+
+    randN_time = calculate_execution_time(randN)
+    bonrN_time = calculate_execution_time(bonrN)
+
     eg0([
-        SAMPLE(randN(d,9, the=the), "rand9"),
-        SAMPLE(randN(d,15, the=the), "rand15"),
-        SAMPLE(randN(d,20, the=the), "rand20"), 
-        SAMPLE(randN(d,358, the=the), "rand358"), 
-        SAMPLE(bonrN(d,9, the=the), "bonr9"),
-        SAMPLE(bonrN(d,15,the=the), "bonr15"),
-        SAMPLE(bonrN(d,20, the=the), "bonr20"),
+        SAMPLE(randN_time(d,9), "rand9"),
+        SAMPLE(randN_time(d,15), "rand15"),
+        SAMPLE(randN_time(d,20), "rand20"), 
+        SAMPLE(randN_time(d,358), "rand358"), 
+        SAMPLE(bonrN_time(d,9), "bonr9"),
+        SAMPLE(bonrN_time(d,15), "bonr15"),
+        SAMPLE(bonrN_time(d,20), "bonr20"),
         SAMPLE(base(d), "base")
     ])
 
@@ -31,7 +46,7 @@ def base(d):
     baseline_output = [row.d2h(d) for row in d.rows]
     return baseline_output
 
-def randN(d, n, the):
+def randN(d, n):
     random.seed(the['seed'])
     rand_arr = []
     for _ in range(20):
@@ -39,11 +54,11 @@ def randN(d, n, the):
         random.shuffle(rows)
         rowsN = random.sample(rows,n)
         rowsN.sort(key=lambda row: row.d2h(d))
-        rand_arr.append(round(rowsN[0].d2h(d),2))
+        rand_arr.append(round(rowsN[0].d2h(d),4))
 
     return rand_arr
 
-def bonrN(d, n, the):
+def bonrN(d, n):
     bonr_arr = []
     for _ in range(20):
         _,_, best_stats = d.gate(the['seed'], 4, n-4, 0.5)
@@ -90,31 +105,32 @@ if __name__ == "__main__":
         full_mid, full_div = data_new.mid_div()
         # print(full_mid, full_div)
 
-        smo_output = []
-        any50_output = []
+        # smo_output = []
+        # any50_output = []
 
-        budget0, budget, some = 4, 10, 0.5
-        for i in range(20):
-            random_seed = set_random_seed()
-            d = DATA(file_path) 
-            ign1, ign2, line = d.gate(random_seed, budget0, budget, some)
-            smo_output.append(line)
-            any50_output.append(d.any50(random_seed))
+        # budget0, budget, some = 4, 10, 0.5
+        # for i in range(20):
+        #     random_seed = set_random_seed()
+        #     d = DATA(file_path) 
+        #     ign1, ign2, line = d.gate(random_seed, budget0, budget, some)
+        #     smo_output.append(line)
+        #     any50_output.append(d.any50(random_seed))
 
-        best = d.best_100(random_seed)
+        # best = d.best_100(random_seed)
     
-        print("date : {} \nfile : {} \nrepeat : {} \nseed : {} \nrows : {} \ncols : {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),the['file'],"20",the['seed'],len(data_new.rows), len(data_new.rows[0].cells)))
-        print("names : \t{}\t\t{}".format(d.cols.names,"D2h-"))
+        # print("date : {} \nfile : {} \nrepeat : {} \nseed : {} \nrows : {} \ncols : {}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),the['file'],"20",the['seed'],len(data_new.rows), len(data_new.rows[0].cells)))
+        print("names : \t{}\t\t{}".format(data.cols.names,"D2h-"))
         print("mid : \t\t{}\t\t\t\t{}".format(list(full_mid[0].values())[1:],full_mid[1]))
         print("div : \t\t{}\t\t\t\t\t{}".format(list(full_div[0].values())[1:],full_div[1]))
         print("#")
-        smo_output = sorted(smo_output, key=lambda x: x[1])
-        for op in smo_output:
-            print("smo9\t\t{}\t\t\t\t{}".format(op[0],op[1]))
-        print("#")
-        any50_output = sorted(any50_output, key=lambda x: x[1])
-        for op in any50_output:
-            print("any50\t\t{}\t\t\t\t{}".format(op[0],op[1]))
-        print("#")
-        print("100%\t\t{}\t\t\t\t{}".format(best[0],best[1]))
-        hw7_part2(the)
+        # smo_output = sorted(smo_output, key=lambda x: x[1])
+        # for op in smo_output:
+        #     print("smo9\t\t{}\t\t\t\t{}".format(op[0],op[1]))
+        # print("#")
+        # any50_output = sorted(any50_output, key=lambda x: x[1])
+        # for op in any50_output:
+        #     print("any50\t\t{}\t\t\t\t{}".format(op[0],op[1]))
+        # print("#")
+        # print("100%\t\t{}\t\t\t\t{}".format(best[0],best[1]))
+
+        calculate_stats()

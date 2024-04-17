@@ -10,8 +10,11 @@ class ROW:
         d, n, p = 0, 0, 2
         for col in data.cols.y:
             n += 1
-            d += abs(col.heaven - col.norm(self.cells[col.at])) ** p
-        return math.sqrt(d) / math.sqrt(n)
+            # d += abs(col.heaven - col.norm(self.cells[col.at])) ** p
+            d += abs(col.heaven - col.norm(self.cells[col.at])) #** p
+        # return math.sqrt(d) / math.sqrt(n)
+        # print(math.sqrt(d) / math.sqrt(n), d, n)
+        return d
 
     def dist(self, other, data):
         d, n, p = 0, 0, 2
