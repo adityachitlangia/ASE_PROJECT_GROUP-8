@@ -21,26 +21,30 @@ def calculate_execution_time(func):
 
 def calculate_stats():
     d = DATA(src = the['file'])
+    
     print("date:{}\nfile:{}\nrepeat:{}\nseed:{}\nrows:{}\ncols:{}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),the['file'],"20",the['seed'],len(d.rows), len(d.rows[0].cells)))
     sortedRows =  sorted(d.rows, key=lambda x: x.d2h(d))
     print(f"best: {o(sortedRows[0].d2h(d),n=4)}")
     all = base(d)
     print(f"tiny: {o(statistics.stdev(all)*0.35,n=4)}")
-    print("#rrp7 ")
+    print("#base #bonr9 #rand9 #bonr15 #rand15 #bonr20 #rand20 #rand358 #rrp7")
 
     randN_time = calculate_execution_time(randN)
-    # bonrN_time = calculate_execution_time(bonrN)
+    bonrN_time = calculate_execution_time(bonrN)
+    rrp_time = calculate_execution_time(rrp)
 
     eg0([
-        # SAMPLE(randN_time(d,9), "rand9"),
-        # SAMPLE(randN_time(d,15), "rand15"),
-        # SAMPLE(randN_time(d,20), "rand20"), 
-        # SAMPLE(randN_time(d,358), "rand358"), 
-        # SAMPLE(bonrN_time(d,9), "bonr9"),
-        # SAMPLE(bonrN_time(d,15), "bonr15"),
-        # SAMPLE(bonrN_time(d,20), "bonr20"),
-        SAMPLE(rrp(d), "rrp7")
-        # SAMPLE(base(d), "base")
+        SAMPLE(randN_time(d,9), "rand9"),
+        SAMPLE(randN_time(d,15), "rand15"),
+        SAMPLE(randN_time(d,20), "rand20"), 
+        SAMPLE(randN_time(d,358), "rand358"), 
+        SAMPLE(bonrN_time(d,9), "bonr9"),
+        SAMPLE(bonrN_time(d,15), "bonr15"),
+        SAMPLE(bonrN_time(d,20), "bonr20"),
+        SAMPLE(rrp_time(d, 7), "rrp7"),
+        SAMPLE(rrp_time(d, 8,(len(d.rows) ** 0.5)), "rrp8"),
+        SAMPLE(rrp_time(d, 9,(len(d.rows) ** 0.5)/2), "rrp9"),
+        SAMPLE(base(d), "base")
     ])
 
 def base(d):
@@ -59,18 +63,23 @@ def randN(d, n):
 
     return rand_arr
 
-def rrp(d):
+def bonrN(d, n):
+    bonr_arr = []
+    for _ in range(20):
+        _,_, best_stats = d.gate(the['seed'], 4, n-4, 0.5)
+        bonr_arr.append(best_stats[1])
+
+    return bonr_arr
+
+def rrp(d, n, stop=None):
     random.seed(the['seed'])
     rrp_arr = []
     for _ in range(20):
-        best, rest, evals = d.branch()
+        best, rest, evals = d.branch(stop=stop)
         # print(o(best.mid().cells))
         best_rows = best.rows
-        # print(len(best_rows), len(rest.rows))
+        # print("evals=",n, len(best_rows), len(rest.rows))
         # print(best.mid().d2h(best))
-        # print(best.rows[0].d2h(best), best.rows[-1].d2h(best), "\n")
-        # print(best.rows[-1].cells,"\n")
-        # print(round(best.mid().cells.d2h(self),2))
         rrp_arr.append(best.mid().d2h(best))
     print("evals:", evals)
     return rrp_arr

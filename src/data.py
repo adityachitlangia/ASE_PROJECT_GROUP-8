@@ -11,7 +11,7 @@ import numpy as np
 
 class DATA:
 
-    def __init__(self, src=[], fun=None):
+    def __init__(self, src=[], fun=None, rrp=None):
         self.rows = []
         self.cols = None
         if isinstance(src, str):
@@ -19,7 +19,6 @@ class DATA:
                 self.add(x, fun)
         else:
             for row in src:
-            # print(src)
                 self.add(row, fun)
 
     def add(self, t, fun=None):
@@ -60,15 +59,7 @@ class DATA:
     def gate(self, random_seed, budget0, budget, some):
         random.seed(random_seed)
         rows = random.sample(self.rows, len(self.rows)) 
-        #y values of first 6 examples in ROWS
-        # DATA.list_1.append(f"1. top6: {[r.cells[len(r.cells)-3:] for r in rows[:6]]}")
-        
-        # y values of first 50 examples in ROWS
-        # DATA.list_2.append(f"2. top50:{[[r.cells[len(r.cells)-3:] for r in rows[:50]]]}")
-        
         rows.sort(key=lambda row: row.d2h(self))
-        # y values of ROW[1]
-        # DATA.list_3.append(f"3. most: {rows[0].cells[len(rows[0].cells)-3:]}")
 
         random.shuffle(rows)
         lite = rows[:budget0]
@@ -80,23 +71,13 @@ class DATA:
         for i in range(budget):
             best, rest = self.best_rest(lite, (len(lite) ** some))
             todo, selected = self.split(best, rest, lite, dark)
-            # y values of centroid of (from DARK, select BUDGET0+i rows at random)
             selected_rows_rand = random.sample(dark, budget0+i)
-            y_values_sum = [0.0]# According to number of y cols
+            y_values_sum = [0.0]
             for row in selected_rows_rand:
                 y_val = list(map(coerce, row.cells[-1:]))# Manually giving y cols?????
                 y_values_sum = [sum(x) for x in zip(y_values_sum, y_val)]
             num_rows = len(selected_rows_rand)
             y_values_centroid = [round(val / num_rows,2) for val in y_values_sum]
-
-            # DATA.list_4.append(f"4: rand:{y_values_centroid}")
-
-            # y values of centroid of SELECTED
-            # DATA.list_5.append(f"5. mid: {selected.mid().cells[len(selected.mid().cells)-3:]}")
-
-            # y values of first row in BEST
-            # DATA.list_6.append(f"6. top: {best.rows[0].cells[len(best.rows[0].cells)-3:]}")
-
             stats.append(selected.mid())
             bests.append(best.rows[0])
             lite.append(dark.pop(todo))
@@ -119,7 +100,7 @@ class DATA:
         return[[self.stats(), round(np.mean(d2h_vals),2)],[self.stats_div(), round(np.std(d2h_vals),2)]]
 
     def split(self, best, rest, lite, dark):
-        selected = DATA(self.cols.names, [])
+        selected = DATA([self.cols.names], [])
         max_val = 0
         out = 1
 
@@ -137,8 +118,8 @@ class DATA:
 
     def best_rest(self, rows, want):
         rows.sort(key=lambda a: a.d2h(self))
-        best = DATA(self.cols.names)
-        rest = DATA(self.cols.names)
+        best = DATA([self.cols.names])
+        rest = DATA([self.cols.names])
         for i, row in enumerate(rows):
             if i < want:
                 best.add(row)
