@@ -18,16 +18,20 @@ class DATA:
             for _, x in csv(src):
                 self.add(x, fun)
         else:
-            self.add(src, fun)
+            for row in src:
+            # print(src)
+                self.add(row, fun)
 
     def add(self, t, fun=None):
         row = t if isinstance(t, ROW) else ROW(t)
         if self.cols:
+            # print(row.cells)
             if fun:
                 fun(self, row)
             self.cols.add(row)
             self.rows.append(row)
         else:
+            # print(row.cells)
             self.cols = COLS(row)
 
     def mid(self, cols=None):
