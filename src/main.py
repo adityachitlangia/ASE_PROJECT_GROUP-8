@@ -22,7 +22,7 @@ def calculate_execution_time(func):
 def calculate_stats():
     d = DATA(src = the['file'])
     
-    print("date:{}\nfile:{}\nrepeat:{}\nseed:{}\nrows:{}\ncols:{}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),the['file'],"20",the['seed'],len(d.rows), len(d.rows[0].cells)))
+    print("date:{}\nfile:{}\nrepeat:{}\nrows:{}\ncols:{}".format(datetime.now().strftime("%d/%m/%Y %H:%M:%S"),the['file'],"20",len(d.rows), len(d.rows[0].cells)))
     sortedRows =  sorted(d.rows, key=lambda x: x.d2h(d))
     print(f"best: {o(sortedRows[0].d2h(d),n=4)}")
     all = base(d)
@@ -44,6 +44,7 @@ def calculate_stats():
         SAMPLE(rrp_time(d, 7), "rrp7"),
         SAMPLE(rrp_time(d, 8,(len(d.rows) ** 0.5)), "rrp8"),
         SAMPLE(rrp_time(d, 9,(len(d.rows) ** 0.5)/2), "rrp9"),
+        SAMPLE(rrp_time(d, 10,(len(d.rows) ** 0.5)/4), "rrp10"),
         SAMPLE(base(d), "base")
     ])
 
@@ -52,9 +53,11 @@ def base(d):
     return baseline_output
 
 def randN(d, n):
-    random.seed(the['seed'])
+    # random.seed(the['seed'])
     rand_arr = []
     for _ in range(20):
+        random_seed = set_random_seed()
+        random.seed(random_seed)
         rows = d.rows
         random.shuffle(rows)
         rowsN = random.sample(rows,n)
@@ -66,15 +69,19 @@ def randN(d, n):
 def bonrN(d, n):
     bonr_arr = []
     for _ in range(20):
-        _,_, best_stats = d.gate(the['seed'], 4, n-4, 0.5)
+        random_seed = set_random_seed()
+        random.seed(random_seed)
+        _,_, best_stats = d.gate(random_seed, 4, n-4, 0.5)
         bonr_arr.append(best_stats[1])
 
     return bonr_arr
 
 def rrp(d, n, stop=None):
-    random.seed(the['seed'])
+    # random.seed(the['seed'])
     rrp_arr = []
     for _ in range(20):
+        random_seed = set_random_seed()
+        random.seed(random_seed)
         best, rest, evals = d.branch(stop=stop)
         # print(o(best.mid().cells))
         best_rows = best.rows
