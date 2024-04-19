@@ -80,8 +80,13 @@ class DATA:
             y_values_centroid = [round(val / num_rows,2) for val in y_values_sum]
             stats.append(selected.mid())
             bests.append(best.rows[0])
-            lite.append(dark.pop(todo))
-        return stats, bests, [bests[-1].cells, round(bests[-1].d2h(self),2)]
+            if todo >= len(dark):  
+                print(todo,len(dark),len(best))
+            else:
+                lite.append(dark.pop(todo))
+            # print(len(dark), todo)
+            # lite.append(dark.pop(todo))
+        return stats, bests, [bests[-1].cells, round(bests[-1].d2h(self),4)]
 
     def stats_div(self, fun=None, ndivs=None):
         u = {}
@@ -104,7 +109,7 @@ class DATA:
         max_val = 0
         out = 1
 
-        for i, row in enumerate(dark, 1):
+        for i, row in enumerate(dark):
             b = row.like(best, len(lite), 2)
             r = row.like(rest, len(lite), 2)
             if b > r:

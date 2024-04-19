@@ -34,17 +34,42 @@ def calculate_stats():
     rrp_time = calculate_execution_time(rrp)
 
     eg0([
+        SAMPLE(randN_time(d,5), "rand5"),
         SAMPLE(randN_time(d,9), "rand9"),
         SAMPLE(randN_time(d,15), "rand15"),
         SAMPLE(randN_time(d,20), "rand20"), 
-        SAMPLE(randN_time(d,358), "rand358"), 
+        SAMPLE(randN_time(d,25), "rand25"),
+        SAMPLE(randN_time(d,30), "rand30"),
+        SAMPLE(randN_time(d,35), "rand35"),
+        SAMPLE(randN_time(d,40), "rand40"),
+        SAMPLE(randN_time(d,50), "rand50"),
+        SAMPLE(randN_time(d,60), "rand60"),
+        SAMPLE(randN_time(d,70), "rand70"),
+        SAMPLE(randN_time(d,80), "rand80"),
+        SAMPLE(randN_time(d,90), "rand90"),
+        SAMPLE(randN_time(d,100), "rand100"), 
+
+        SAMPLE(bonrN_time(d,5), "bonr5"),
         SAMPLE(bonrN_time(d,9), "bonr9"),
         SAMPLE(bonrN_time(d,15), "bonr15"),
-        SAMPLE(bonrN_time(d,20), "bonr20"),
+        SAMPLE(bonrN_time(d,20), "bonr20"), 
+        SAMPLE(bonrN_time(d,25), "bonr25"),
+        SAMPLE(bonrN_time(d,30), "bonr30"),
+        SAMPLE(bonrN_time(d,35), "bonr35"),
+        SAMPLE(bonrN_time(d,40), "bonr40"),
+        SAMPLE(bonrN_time(d,50), "bonr50"),
+        SAMPLE(bonrN_time(d,60), "bonr60"),
+        SAMPLE(bonrN_time(d,70), "bonr70"),
+        SAMPLE(bonrN_time(d,80), "bonr80"),
+        SAMPLE(bonrN_time(d,90), "bonr90"),
+        SAMPLE(bonrN_time(d,100), "bonr100"),
+
         SAMPLE(rrp_time(d, 7), "rrp7"),
         SAMPLE(rrp_time(d, 8,(len(d.rows) ** 0.5)), "rrp8"),
         SAMPLE(rrp_time(d, 9,(len(d.rows) ** 0.5)/2), "rrp9"),
         SAMPLE(rrp_time(d, 10,(len(d.rows) ** 0.5)/4), "rrp10"),
+
+
         SAMPLE(base(d), "base")
     ])
 

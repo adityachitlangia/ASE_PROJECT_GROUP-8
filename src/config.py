@@ -6,7 +6,7 @@ USAGE:
 
 OPTIONS:
   -c --cohen    small effect size               = .35
-  -f --file     csv data file name              = ./data/SS-I-hyperparameters1.csv
+  -f --file     csv data file name              = ./data/RF_SS-C_hyperparameters.csv
   -h --help     show help                       = False
   -k --k        low class frequency kludge      = 1
   -m --m        low attribute frequency kludge  = 2
