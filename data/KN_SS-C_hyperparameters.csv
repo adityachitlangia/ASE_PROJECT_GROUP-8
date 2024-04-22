@@ -1,4 +1,4 @@
-n_neighbors,weights,algorithm,leaf_size,p,MMRE-
+N_neighbors,weights,algorithm,Leaf_size,P,MMRE-
 2,uniform,auto,10,1,6.85072
 2,uniform,auto,10,2,6.865900000000001
 2,uniform,auto,20,1,6.846120000000001

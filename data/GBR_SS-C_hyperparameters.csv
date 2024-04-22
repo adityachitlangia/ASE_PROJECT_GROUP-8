@@ -1,4 +1,4 @@
-learning_rate,n_estimators,min_samples_split,min_samples_leaf,max_depth,MMRE-
+Learning_rate,N_estimators,Min_samples_split,Min_samples_leaf,Max_depth,MMRE-
 0.001,10,2,1,5,625.1424199999999
 0.001,10,2,1,10,625.1392
 0.001,10,2,1,20,625.13974

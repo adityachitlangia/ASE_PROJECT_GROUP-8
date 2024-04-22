@@ -1,4 +1,4 @@
-alpha,fit_intercept,copy_X,max_iter,tol,MMRE-
+Alpha,fit_intercept,copy_X,Max_iter,Tol,MMRE-
 0.001,True,True,500,1e-05,8.638739999999999
 0.001,True,True,500,0.0001,8.63872
 0.001,True,True,500,0.001,8.63872

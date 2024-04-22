@@ -1,4 +1,4 @@
-alpha,fit_intercept,copy_X,max_iter,tol,solver,MMRE-
+Alpha,fit_intercept,copy_X,Max_iter,Tol,solver,MMRE-
 0.001,True,True,5000,0.0001,auto,7.41156
 0.001,True,True,5000,0.0001,svd,7.41156
 0.001,True,True,5000,0.0001,cholesky,7.41156

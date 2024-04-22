@@ -1,4 +1,4 @@
-n_estimators,max_depth,min_samples_split,min_samples_leaf,max_features,min_impurity_decrease,MMRE-
+N_estimators,Max_depth,Min_samples_split,Min_samples_leaf,max_features,Min_impurity_decrease,MMRE-
 10,5,2,1,50,0.0,109.70912000000001
 10,5,2,1,50,0.1,110.1878
 10,5,2,1,50,0.2,110.05947999999998
